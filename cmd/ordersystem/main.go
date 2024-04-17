@@ -10,6 +10,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/devfullcycle/20-CleanArch/configs"
 	"github.com/devfullcycle/20-CleanArch/internal/event/handler"
+	"github.com/devfullcycle/20-CleanArch/internal/infra/database"
 	"github.com/devfullcycle/20-CleanArch/internal/infra/graph"
 	"github.com/devfullcycle/20-CleanArch/internal/infra/grpc/pb"
 	"github.com/devfullcycle/20-CleanArch/internal/infra/grpc/service"
@@ -67,9 +68,14 @@ func main() {
 	}
 	go grpcServer.Serve(lis)
 
-	srv := graphql_handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+	orderRepository := database.NewOrderRepository(db)
+
+	resolver := &graph.Resolver{
 		CreateOrderUseCase: *createOrderUseCase,
-	}}))
+		OrderRepository:    orderRepository,
+	}
+	srv := graphql_handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
+
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 

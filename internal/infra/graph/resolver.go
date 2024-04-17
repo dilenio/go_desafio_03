@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/devfullcycle/20-CleanArch/internal/usecase"
+import (
+	"github.com/devfullcycle/20-CleanArch/internal/entity"
+	"github.com/devfullcycle/20-CleanArch/internal/usecase"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,5 +11,5 @@ import "github.com/devfullcycle/20-CleanArch/internal/usecase"
 
 type Resolver struct {
 	CreateOrderUseCase usecase.CreateOrderUseCase
-	ListOrderUserCase  usecase.ListOrdersUseCase
+	OrderRepository    entity.OrderRepositoryInterface
 }
