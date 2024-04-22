@@ -62,6 +62,10 @@ func (c *CreateOrderUseCase) Execute(input OrderInputDTO) (OrderOutputDTO, error
 
 // DESAFIO
 
+type ListOrdersUseCaseInterface interface {
+	Execute() ([]entity.Order, error)
+}
+
 type ListOrdersUseCase struct {
 	OrderRepository entity.OrderRepositoryInterface
 }
